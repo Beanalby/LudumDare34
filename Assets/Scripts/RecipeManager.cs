@@ -68,13 +68,14 @@ namespace LudumDare34 {
                 nextIngredientIndex++;
                 if (nextIngredientIndex == currentRecipe.ingredients.Length) {
                     Debug.Log("+++ recipe completed!");
+                    GameDriver.Instance.RecipeFinished();
                     ChooseNewRecipe();
                     nextIngredientIndex = 0;
                 }
             }
         }
 
-        private void ChooseNewRecipe() {
+        public void ChooseNewRecipe() {
             // choose a recipe that isn't the current one
             while (true) {
                 int r = Random.Range(0, recipes.Length);
