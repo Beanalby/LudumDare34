@@ -39,10 +39,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977c903c6a1718149ac893525582cba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayName: a house
   ingredients:
   - {fileID: 11406888, guid: c27ab681f73e6434ba49f1dd4132a889, type: 2}
   - {fileID: 11402986, guid: 4a34ae9c69a147d4c94db32e78b89e9a, type: 2}
   - {fileID: 11442538, guid: 1cc8ebf3efb7f4d4e991ad6dad5dad0b, type: 2}
+  - {fileID: 11448110, guid: d2a2177c43b95f4468f125ec1b1c849f, type: 2}
   - {fileID: 11498588, guid: ac5a80b5ebcde674285c66ce276f2ba5, type: 2}
 --- !u!1001 &100100000
 Prefab:
@@ -50,7 +52,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: displayName
+      value: a house
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 171186}

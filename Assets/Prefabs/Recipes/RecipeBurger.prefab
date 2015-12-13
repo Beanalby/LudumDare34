@@ -39,6 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977c903c6a1718149ac893525582cba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayName: a burger
   ingredients:
   - {fileID: 11403422, guid: 48e8f234d9b306445941d8406ba9370a, type: 2}
   - {fileID: 11457302, guid: ac8cb5813ed685b4ca2e7e90d34041d6, type: 2}
@@ -49,7 +50,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: displayName
+      value: a burger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 121030}
