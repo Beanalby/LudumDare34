@@ -160,7 +160,7 @@ namespace LudumDare34 {
             UpdateLabels();
         }
         public void PlayAgainClicked() {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("title");
             //Application.LoadLevel(Application.loadedLevel);
         }
 #endregion
