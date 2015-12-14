@@ -176,7 +176,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.019607844}
+  m_BackGroundColor: {r: 0.19117647, g: 0.19117647, b: 0.19117647, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -186,7 +186,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -207,8 +207,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 375105943}
-  m_LocalRotation: {x: 0.25660446, y: 0.12607843, z: 0.03378266, w: 0.95766234}
-  m_LocalPosition: {x: -3, y: 7, z: -10}
+  m_LocalRotation: {x: 0.058823094, y: 0.09445573, z: -0.0055909874, w: 0.993774}
+  m_LocalPosition: {x: -0.5, y: 1.288, z: -2.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -327,6 +327,10 @@ Prefab:
       propertyPath: gameLabels.Array.data[2]
       value: 
       objectReference: {fileID: 2042173803}
+    - target: {fileID: 155104, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
   m_IsPrefabParent: 0
