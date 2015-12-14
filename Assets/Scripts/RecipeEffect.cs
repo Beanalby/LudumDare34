@@ -3,14 +3,17 @@ using System.Collections;
 
 namespace LudumDare34 {
     public class RecipeEffect : MonoBehaviour {
+        private AudioSource audioSource;
         //private Animator anim;
         public void Start() {
             //anim = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
             foreach (Transform t in transform) {
                 t.gameObject.SetActive(false);
             }
         }
         public void Go() {
+            audioSource.Play();
             foreach (Transform t in transform) {
                 t.gameObject.SetActive(true);
             }

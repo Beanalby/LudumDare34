@@ -18,7 +18,7 @@ namespace LudumDare34 {
         }
         public void Awake() {
             if (_instance != null) {
-                Debug.LogError("+++ already have a GameDriver!");
+                Debug.LogError("!!! already have a GameDriver!");
                 Destroy(gameObject);
                 return;
             }
@@ -32,6 +32,7 @@ namespace LudumDare34 {
         public Text recipeLabel, ingredientLabel, timeLabel, scoreLabel;
         public GameObject GameOverPanel;
         public RecipeEffect effectCheck, effectX;
+        public AudioClip soundYes, soundNo;
         public Button[] gameButtons;
         public Text[] gameLabels;
 
@@ -39,6 +40,7 @@ namespace LudumDare34 {
         private int score = 0;
         private Ingredient newIngredient = null;
         private bool isGameRunning = false;
+        private AudioSource audioSource;
 
         private void EnableButtons() {
             foreach (Button b in gameButtons) {
@@ -67,7 +69,6 @@ namespace LudumDare34 {
             EnableLabels();
         }
         private void EndGame() {
-            Debug.Log("+++ Game over!");
             isGameRunning = false;
             GameOverPanel.SetActive(true);
             DisableButtons();
@@ -131,6 +132,7 @@ namespace LudumDare34 {
 
 #region Unity callbacks
         public void Start() {
+            audioSource = GetComponent<AudioSource>();
             newIngredient = RecipeManager.Instance.GetRandomIngredient(null);
             UpdateLabels();
             StartGame();
@@ -142,6 +144,8 @@ namespace LudumDare34 {
 
 #region UI callbacks
         public void YesClicked() {
+            audioSource.clip = soundYes;
+            audioSource.Play();
             bool finished = RecipeManager.Instance.AddIngredient(newIngredient);
             if (!finished) {
                 newIngredient = RecipeManager.Instance.GetRandomIngredient(newIngredient);
@@ -150,6 +154,8 @@ namespace LudumDare34 {
         }
 
         public void NoClicked() {
+            audioSource.clip = soundNo;
+            audioSource.Play();
             newIngredient = RecipeManager.Instance.GetRandomIngredient(newIngredient);
             UpdateLabels();
         }

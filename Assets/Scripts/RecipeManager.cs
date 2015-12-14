@@ -24,8 +24,8 @@ namespace LudumDare34 {
             ChooseNewRecipe();
         }
 
-        //private static float RIGHT_INGREDIENT_CHANCE = 0.33f;
-        private static float RIGHT_INGREDIENT_CHANCE = 1f;
+        private static float RIGHT_INGREDIENT_CHANCE = 0.33f;
+        //private static float RIGHT_INGREDIENT_CHANCE = 1f;
 
         public Recipe[] recipes;
 
@@ -69,15 +69,12 @@ namespace LudumDare34 {
             obj.transform.position = Vector3.up;
 
             if (ing != currentRecipe.ingredients[nextIngredientIndex]) {
-                Debug.Log("+++ Adding INCORRECT ing " + ing.displayName);
                 currentInstance.Failed();
                 GameDriver.Instance.RecipeFailed();
                 return true;
             } else {
-                Debug.Log("+++ Adding correct ing " + ing.displayName);
                 nextIngredientIndex++;
                 if (nextIngredientIndex == currentRecipe.ingredients.Length) {
-                    Debug.Log("+++ recipe completed!");
                     currentInstance.Succeeded();
                     GameDriver.Instance.RecipeSucceeded();
                     return true;

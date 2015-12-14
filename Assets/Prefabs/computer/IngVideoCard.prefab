@@ -28,6 +28,7 @@ GameObject:
   - 23: {fileID: 2319154}
   - 54: {fileID: 5457170}
   - 65: {fileID: 6563152}
+  - 114: {fileID: 11405962}
   m_Layer: 0
   m_Name: ingVideoCard
   m_TagString: Untagged
@@ -123,6 +124,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.08960708, y: 0.96115303, z: 0.36048806}
   m_Center: {x: -0.00508649, y: 0.014132505, z: 0.15720001}
+--- !u!114 &11405962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 989d6be00c14b2849bdafa1ffc1b9e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: e9983815e86317d4a89fd23fc73db5d0, type: 3}
 --- !u!114 &11406874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,6 +159,10 @@ Prefab:
       propertyPath: displayName
       value: a Video Card
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: e9983815e86317d4a89fd23fc73db5d0, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 105822}
