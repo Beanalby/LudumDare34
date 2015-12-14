@@ -24,11 +24,14 @@ namespace LudumDare34 {
             ChooseNewRecipe();
         }
 
-        private static float RIGHT_INGREDIENT_CHANCE = 0.33f;
+        //private static float RIGHT_INGREDIENT_CHANCE = 0.33f;
+        private static float RIGHT_INGREDIENT_CHANCE = 1f;
 
         public Recipe[] recipes;
 
         private Recipe currentRecipe = null;
+        private Recipe currentInstance = null;
+
         public Recipe CurrentRecipe { get { return currentRecipe; } }
         int nextIngredientIndex = 0;
 
@@ -60,27 +63,40 @@ namespace LudumDare34 {
             }
         }
 
-        public void AddIngredient(Ingredient ing) {
+        public bool AddIngredient(Ingredient ing) {
+            GameObject obj = Instantiate(ing.gameObject);
+            obj.transform.parent = currentInstance.transform;
+            obj.transform.position = Vector3.up;
+
             if (ing != currentRecipe.ingredients[nextIngredientIndex]) {
                 Debug.Log("+++ Adding INCORRECT ing " + ing.displayName);
+                currentInstance.Failed();
+                GameDriver.Instance.RecipeFailed();
+                return true;
             } else {
                 Debug.Log("+++ Adding correct ing " + ing.displayName);
                 nextIngredientIndex++;
                 if (nextIngredientIndex == currentRecipe.ingredients.Length) {
                     Debug.Log("+++ recipe completed!");
-                    GameDriver.Instance.RecipeFinished();
-                    ChooseNewRecipe();
-                    nextIngredientIndex = 0;
+                    currentInstance.Succeeded();
+                    GameDriver.Instance.RecipeSucceeded();
+                    return true;
                 }
             }
+            return false;
         }
 
         public void ChooseNewRecipe() {
+            nextIngredientIndex = 0;
             // choose a recipe that isn't the current one
             while (true) {
                 int r = Random.Range(0, recipes.Length);
                 if (recipes[r] != currentRecipe) {
                     currentRecipe = recipes[r];
+                    if (currentInstance != null) {
+                        Destroy(currentInstance.gameObject);
+                    }
+                    currentInstance = Instantiate(currentRecipe.gameObject).GetComponent<Recipe>();
                     return;
                 }
             }

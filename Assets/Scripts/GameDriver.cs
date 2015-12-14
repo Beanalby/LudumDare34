@@ -26,6 +26,9 @@ namespace LudumDare34 {
         }
 #endregion
 
+        public static float RECIPE_SUCCESS_DELAY = .5f;
+        private static float RECIPE_CHANGE_DELAY = 2f;
+
         public Text recipeLabel, ingredientLabel, timeLabel, scoreLabel;
         public GameObject GameOverPanel;
         public Button[] gameButtons;
@@ -36,26 +39,38 @@ namespace LudumDare34 {
         private Ingredient newIngredient = null;
         private bool isGameRunning = false;
 
-        private void StartGame() {
-            timeStarted = Time.time;
-            isGameRunning = true;
+        private void EnableButtons() {
             foreach (Button b in gameButtons) {
                 b.interactable = true;
             }
+        }
+        private void DisableButtons() {
+            foreach (Button b in gameButtons) {
+                b.interactable = false;
+            }
+        }
+        private void EnableLabels() {
             foreach (Text t in gameLabels) {
                 t.enabled = true;
             }
+        }
+        private void DisableLabels() {
+            foreach (Text t in gameLabels) {
+                t.enabled = false;
+            }
+        }
+        private void StartGame() {
+            timeStarted = Time.time;
+            isGameRunning = true;
+            EnableButtons();
+            EnableLabels();
         }
         private void EndGame() {
             Debug.Log("+++ Game over!");
             isGameRunning = false;
             GameOverPanel.SetActive(true);
-            foreach (Button b in gameButtons) {
-                b.interactable = false;
-            }
-            foreach (Text t in gameLabels) {
-                t.enabled = false;
-            }
+            DisableButtons();
+            DisableLabels();
         }
         private void UpdateLabels() {
             recipeLabel.text = "Build " + RecipeManager.Instance.CurrentRecipe.displayName + "!";
@@ -63,11 +78,8 @@ namespace LudumDare34 {
             scoreLabel.text = "Things built: " + score;
         }
         private void UpdateTime() {
-            string timeDisplay;
-            if (!isGameRunning && timeStarted == -1) {
-                timeDisplay = "";
-            }
-            else {
+            string timeDisplay = "";
+            if (isGameRunning) {
                 float timeLeft = Mathf.Max(0, timeMax - (Time.time - timeStarted));
                 timeDisplay = timeLeft.ToString(".00");
                 if (timeLeft == 0) {
@@ -79,12 +91,31 @@ namespace LudumDare34 {
             }
             timeLabel.text = "Time: " + timeDisplay;
         }
-
-#region Game callbacks
-        public void RecipeFinished() {
-            score++;
+        private void InitNextRecipe() {
+            StartCoroutine(_initNextRecipe());
+        }
+        private IEnumerator _initNextRecipe() {
+            ingredientLabel.enabled = false;
+            yield return new WaitForSeconds(RECIPE_CHANGE_DELAY);
+            ingredientLabel.enabled = true;
+            RecipeManager.Instance.ChooseNewRecipe();
+            newIngredient = RecipeManager.Instance.GetRandomIngredient(null);
+            isGameRunning = true;
             timeMax -= timeReduction;
             timeStarted = Time.time;
+            UpdateLabels();
+            EnableButtons();
+        }
+
+#region Game callbacks
+        public void RecipeFailed() {
+            Debug.Log("+++ todo.");
+        }
+        public void RecipeSucceeded() {
+            score++;
+            isGameRunning = false;
+            DisableButtons();
+            InitNextRecipe();
         }
 #endregion
 
@@ -101,9 +132,11 @@ namespace LudumDare34 {
 
 #region UI callbacks
         public void YesClicked() {
-            RecipeManager.Instance.AddIngredient(newIngredient);
-            newIngredient = RecipeManager.Instance.GetRandomIngredient(newIngredient);
-            UpdateLabels();
+            bool finished = RecipeManager.Instance.AddIngredient(newIngredient);
+            if (!finished) {
+                newIngredient = RecipeManager.Instance.GetRandomIngredient(newIngredient);
+                UpdateLabels();
+            }
         }
 
         public void NoClicked() {
