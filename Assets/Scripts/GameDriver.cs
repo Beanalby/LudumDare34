@@ -26,11 +26,12 @@ namespace LudumDare34 {
         }
 #endregion
 
-        public static float RECIPE_SUCCESS_DELAY = .5f;
-        private static float RECIPE_CHANGE_DELAY = 2f;
+        public static float RECIPE_EFFECT_DELAY = .5f;
+        private static float RECIPE_CHANGE_DELAY = 1.5f;
 
         public Text recipeLabel, ingredientLabel, timeLabel, scoreLabel;
         public GameObject GameOverPanel;
+        public RecipeEffect effectCheck, effectX;
         public Button[] gameButtons;
         public Text[] gameLabels;
 
@@ -91,12 +92,19 @@ namespace LudumDare34 {
             }
             timeLabel.text = "Time: " + timeDisplay;
         }
-        private void InitNextRecipe() {
-            StartCoroutine(_initNextRecipe());
+        private void InitNextRecipe(bool success) {
+            StartCoroutine(_initNextRecipe(success));
         }
-        private IEnumerator _initNextRecipe() {
+        private IEnumerator _initNextRecipe(bool success) {
             ingredientLabel.enabled = false;
+            yield return new WaitForSeconds(RECIPE_EFFECT_DELAY);
+            if (success) {
+                effectCheck.Go();
+            } else {
+                effectX.Go();
+            }
             yield return new WaitForSeconds(RECIPE_CHANGE_DELAY);
+
             ingredientLabel.enabled = true;
             RecipeManager.Instance.ChooseNewRecipe();
             newIngredient = RecipeManager.Instance.GetRandomIngredient(null);
@@ -109,13 +117,15 @@ namespace LudumDare34 {
 
 #region Game callbacks
         public void RecipeFailed() {
-            Debug.Log("+++ todo.");
+            isGameRunning = false;
+            DisableButtons();
+            InitNextRecipe(false);
         }
         public void RecipeSucceeded() {
             score++;
             isGameRunning = false;
             DisableButtons();
-            InitNextRecipe();
+            InitNextRecipe(true);
         }
 #endregion
 

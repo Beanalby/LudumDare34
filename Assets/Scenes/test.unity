@@ -213,12 +213,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &2042173803 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11474638, guid: 538fac68d06bb4b4b8202a061ea1cd31,
-    type: 2}
-  m_PrefabInternal: {fileID: 2068224841}
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &2066520669
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,10 +281,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11440004, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
-      propertyPath: gameLabels.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 431162, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -322,14 +312,6 @@ Prefab:
     - target: {fileID: 431162, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11440004, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
-      propertyPath: gameLabels.Array.data[2]
-      value: 
-      objectReference: {fileID: 2042173803}
-    - target: {fileID: 155104, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 538fac68d06bb4b4b8202a061ea1cd31, type: 2}

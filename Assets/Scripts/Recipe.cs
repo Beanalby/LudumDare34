@@ -24,7 +24,7 @@ namespace LudumDare34 {
             StartCoroutine(_succeeded());
         }
         private IEnumerator _succeeded() {
-            yield return new WaitForSeconds(GameDriver.RECIPE_SUCCESS_DELAY);
+            yield return new WaitForSeconds(GameDriver.RECIPE_EFFECT_DELAY);
             if (modelTopPrefab != null) {
                 modelTop = Instantiate(modelTopPrefab);
                 modelTop.transform.parent = transform;
