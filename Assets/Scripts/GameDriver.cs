@@ -39,7 +39,7 @@ namespace LudumDare34 {
         public Text[] gameLabels;
 
         private int currentLife = 3;
-        private float timeMax = 5, timeReduction = 1, timeStarted = -1;
+        private float timeMax = 15, timeReduction = 1, timeStarted = -1;
         private int score = 0;
         private Ingredient newIngredient = null;
         private bool isTimeRunning = false, isGameRunning = false;
@@ -73,7 +73,6 @@ namespace LudumDare34 {
             EnableLabels();
         }
         private void EndGame() {
-            Debug.Log("+++ ending game!");
             isTimeRunning = false;
             isGameRunning = false;
             GameOverPanel.SetActive(true);
