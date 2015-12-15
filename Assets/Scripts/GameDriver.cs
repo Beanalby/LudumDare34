@@ -29,17 +29,20 @@ namespace LudumDare34 {
         public static float RECIPE_EFFECT_DELAY = .5f;
         private static float RECIPE_CHANGE_DELAY = 1.5f;
 
-        public Text recipeLabel, ingredientLabel, timeLabel, scoreLabel;
+        public Text recipeLabel, ingredientLabel, timeLabel, scoreLabel, timeExpiredLabel;
         public GameObject GameOverPanel;
         public RecipeEffect effectCheck, effectX;
         public AudioClip soundYes, soundNo;
+        public Sprite heartEmpty, heartFull;
+        public Image[] hearts;
         public Button[] gameButtons;
         public Text[] gameLabels;
 
-        private float timeMax = 15, timeReduction = 1, timeStarted = -1;
+        private int currentLife = 3;
+        private float timeMax = 5, timeReduction = 1, timeStarted = -1;
         private int score = 0;
         private Ingredient newIngredient = null;
-        private bool isGameRunning = false;
+        private bool isTimeRunning = false, isGameRunning = false;
         private AudioSource audioSource;
 
         private void EnableButtons() {
@@ -64,11 +67,14 @@ namespace LudumDare34 {
         }
         private void StartGame() {
             timeStarted = Time.time;
+            isTimeRunning = true;
             isGameRunning = true;
             EnableButtons();
             EnableLabels();
         }
         private void EndGame() {
+            Debug.Log("+++ ending game!");
+            isTimeRunning = false;
             isGameRunning = false;
             GameOverPanel.SetActive(true);
             DisableButtons();
@@ -78,55 +84,72 @@ namespace LudumDare34 {
             recipeLabel.text = "Build " + RecipeManager.Instance.CurrentRecipe.displayName + "!";
             ingredientLabel.text = "Add " + newIngredient.displayName + "?";
             scoreLabel.text = "Things built: " + score;
+            for (int i = 0; i < hearts.Length; i++) {
+                if (currentLife > i) {
+                    hearts[i].sprite = heartFull;
+                } else {
+                    hearts[i].sprite = heartEmpty;
+                }
+            }
         }
         private void UpdateTime() {
             string timeDisplay = "";
-            if (isGameRunning) {
+            if (isTimeRunning) {
                 float timeLeft = Mathf.Max(0, timeMax - (Time.time - timeStarted));
                 timeDisplay = timeLeft.ToString(".00");
                 if (timeLeft == 0) {
                     timeDisplay = "0";
-                    if (isGameRunning) {
-                        EndGame();
-                    }
+                    TimeExpired();
                 }
             }
             timeLabel.text = "Time: " + timeDisplay;
         }
-        private void InitNextRecipe(bool success) {
-            StartCoroutine(_initNextRecipe(success));
+        private void TimeExpired() {
+            timeExpiredLabel.gameObject.SetActive(true);
+            InitNextRecipe(false, false);
         }
-        private IEnumerator _initNextRecipe(bool success) {
+        private void InitNextRecipe(bool success, bool effectDelay) {
+            StartCoroutine(_initNextRecipe(success, effectDelay));
+        }
+        private IEnumerator _initNextRecipe(bool success, bool effectDelay) {
+            isTimeRunning = false;
             ingredientLabel.enabled = false;
-            yield return new WaitForSeconds(RECIPE_EFFECT_DELAY);
+            DisableButtons();
+            if (effectDelay) {
+                yield return new WaitForSeconds(RECIPE_EFFECT_DELAY);
+            }
             if (success) {
                 effectCheck.Go();
             } else {
                 effectX.Go();
+                currentLife--;
+                if(currentLife <= 0) {
+                    EndGame();
+                }
             }
-            yield return new WaitForSeconds(RECIPE_CHANGE_DELAY);
-
-            ingredientLabel.enabled = true;
-            RecipeManager.Instance.ChooseNewRecipe();
-            newIngredient = RecipeManager.Instance.GetRandomIngredient(null);
-            isGameRunning = true;
-            timeMax -= timeReduction;
-            timeStarted = Time.time;
             UpdateLabels();
-            EnableButtons();
+            yield return new WaitForSeconds(RECIPE_CHANGE_DELAY);
+            timeExpiredLabel.gameObject.SetActive(false);
+            if (isGameRunning) {
+
+                ingredientLabel.enabled = true;
+                RecipeManager.Instance.ChooseNewRecipe();
+                newIngredient = RecipeManager.Instance.GetRandomIngredient(null);
+                isTimeRunning = true;
+                timeMax -= timeReduction;
+                timeStarted = Time.time;
+                UpdateLabels();
+                EnableButtons();
+            }
         }
 
 #region Game callbacks
         public void RecipeFailed() {
-            isGameRunning = false;
-            DisableButtons();
-            InitNextRecipe(false);
+            InitNextRecipe(false, true);
         }
         public void RecipeSucceeded() {
             score++;
-            isGameRunning = false;
-            DisableButtons();
-            InitNextRecipe(true);
+            InitNextRecipe(true, true);
         }
 #endregion
 
